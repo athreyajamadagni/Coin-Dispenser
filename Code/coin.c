@@ -117,7 +117,7 @@ int main()
             else
             {
                 printf("Please enter a valid input.\n");
-                goto YES_OR_NO;
+                goto YES_OR_NO; //Please remove goto statement
             }
 
             
