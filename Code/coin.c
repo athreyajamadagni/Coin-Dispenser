@@ -15,15 +15,15 @@ one_coin stores the number of one rupee coins to be dispensed
 #include <stdlib.h>
 #include <ctype.h>
 
-char* trim(char *str)
+char *trim(char *str)
 {
     char *end;
-    while(isspace((unsigned char)*str))
+    while (isspace((unsigned char)*str))
         str++;
-    if(*str == 0)
+    if (*str == 0)
         return str;
     end = str + strlen(str) - 1;
-    while(end > str && isspace((unsigned char)*end))
+    while (end > str && isspace((unsigned char)*end))
         --end;
     end[1] = '\0';
     return str;
@@ -32,14 +32,14 @@ char* trim(char *str)
 char input_char(char *message)
 {
     char buf[1024];
-    char character='c';
+    char character = 'c';
     char *trim_str;
-    printf("%s",message);
+    printf("%s", message);
     do
-    {    
-        fgets(buf,sizeof(buf),stdin);
+    {
+        fgets(buf, sizeof(buf), stdin);
         trim_str = trim(buf);
-    }while(!strlen(trim_str));
+    } while (!strlen(trim_str));
     return trim_str[0];
 }
 
@@ -49,9 +49,9 @@ int input_int(char *message)
     int number;
     do
     {
-        printf("%s",message);
-        fgets(buf,sizeof(buf),stdin);
-    }while(sscanf(buf,"%d",&number)!=1);
+        printf("%s", message);
+        fgets(buf, sizeof(buf), stdin);
+    } while (sscanf(buf, "%d", &number) != 1);
     return number;
 }
 
@@ -66,7 +66,7 @@ int required_amount_match(int ten, int five, int two, int one, int amount)
     return 0;
 }
 
-void display(int a, int ten , int five , int two , int one)
+void display(int a, int ten, int five, int two, int one)
 {
     printf("You requested %d Rupees to be dispensed.\n", a);
     printf("You are receiving a total of %d Ten rupee coins.\n", ten);
@@ -79,7 +79,7 @@ void display(int a, int ten , int five , int two , int one)
 int again()
 {
     char repeat;
-    while(1)
+    while (1)
     {
         repeat = input_char("Would you like to go again? Y or N?");
         if (repeat == 'Y' || repeat == 'y')
@@ -91,36 +91,34 @@ int again()
     }
 }
 
-
-void dispense(int a , int *ten, int *five , int *two , int *one)
+void dispense(int a, int *ten, int *five, int *two, int *one)
 {
     int amount_to_dispense;
-    amount_to_dispense= a-((*(ten)*10)+(*(five)*5)+(*(two)*2)+(*(one)*1));
-    printf("%d is amount\n",amount_to_dispense);
-    int extra_ten = amount_to_dispense/10;
+    amount_to_dispense = a - ((*(ten)*10) + (*(five)*5) + (*(two)*2) + (*(one)*1));
+    printf("%d is amount\n", amount_to_dispense);
+    int extra_ten = amount_to_dispense / 10;
     amount_to_dispense -= 10 * extra_ten;
-    int extra_five = amount_to_dispense/5;
+    int extra_five = amount_to_dispense / 5;
     amount_to_dispense -= 5 * extra_five;
-    int extra_two = amount_to_dispense/2;
+    int extra_two = amount_to_dispense / 2;
     amount_to_dispense -= 2 * extra_two;
-    int extra_one = amount_to_dispense/1;
+    int extra_one = amount_to_dispense / 1;
     *ten = *ten + extra_ten;
     *five = *five + extra_five;
     *two = *two + extra_two;
     *one = *one + extra_one;
 }
 
-
 int main()
 {
-    int amount=0;
-    int ten_coin=0;
-    int five_coin=0;
-    int two_coin=0;
-    int one_coin=0;
+    int amount = 0;
+    int ten_coin = 0;
+    int five_coin = 0;
+    int two_coin = 0;
+    int one_coin = 0;
     int choice = 1, req = 1;
     char yes_no, repeat;
-    int valid=1;
+    int valid = 1;
 
     while (choice)
     {
@@ -129,18 +127,18 @@ int main()
         printf("**********\n");
         do
         {
-           amount = input_int("Please enter an amount greater than 0 to receive coins. \nIf decimal amount is entered, it will be truncated: \n");
-           if(amount <= 0)
-           {
-                printf("Amount cannot be 0 or less that 0, please enter a valid amount. \n");
+            amount = input_int("Please enter an amount greater than 0 to receive coins. \nIf decimal amount is entered, it will be truncated: \n");
+            if (amount <= 0)
+            {
+                printf("Amount cannot be 0 or less than 0, please enter a valid amount. \n");
                 amount = input_int("Please enter amount to receive coins. \nIf decimal amount is entered, it will be truncated: \n");
-           }
-        }while(amount<=0);
+            }
+        } while (amount <= 0);
 
         do
         {
             yes_no = input_char("Do you have any particular change requirement? (Y/N):\n");
-            if(yes_no == 'Y' || yes_no == 'y')
+            if (yes_no == 'Y' || yes_no == 'y')
             {
                 do
                 {
@@ -151,15 +149,15 @@ int main()
                     one_coin = input_int("Please enter minimum number of one rupee coins you need: ");
                     req = required_amount_match(ten_coin, five_coin, two_coin, one_coin, amount);
                     valid = 0;
-                }while(req);
+                } while (req);
                 dispense(amount, &ten_coin, &five_coin, &two_coin, &one_coin);
             }
             else if (yes_no == 'N' || yes_no == 'n')
             {
-                ten_coin=0;
-                five_coin=0;
-                two_coin=0;
-                one_coin=0;
+                ten_coin = 0;
+                five_coin = 0;
+                two_coin = 0;
+                one_coin = 0;
                 dispense(amount, &ten_coin, &five_coin, &two_coin, &one_coin);
                 valid = 0;
             }
@@ -167,11 +165,11 @@ int main()
             {
                 printf("Please enter a valid input.\n");
             }
-            
-        }while(valid);
-            
-        display(amount,ten_coin,five_coin,two_coin,one_coin);
-        choice = again();  
+
+        } while (valid);
+
+        display(amount, ten_coin, five_coin, two_coin, one_coin);
+        choice = again();
     }
     return 0;
 }
